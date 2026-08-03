@@ -2258,13 +2258,22 @@ html[data-theme="dark"] .bc-card:hover {
   min-height: min(72vh, 520px);
 }
 /* =============================================================
-   Hero Globe — rebuilt animation
-   Animation stages (all CSS-driven, no JS needed for sequence):
-     Stage 1 (0–2.35s)  Globe lines draw one by one
-     Stage 2 (2.35–2.8s) Pause
-     Stage 3–4 (2.8–7.3s) Pins appear + routes draw sequentially
-     Stage 5 (8s+)       Idle: breathing + subtle route glow
-   All coordinates are fixed SVG values. No DOM calculations.
+   Hero Globe — animation rebuilt
+   Original SVG untouched. Only CSS timing + new .hl-route /
+   .hl-marker selectors added.
+
+   Timeline:
+     0.15 – 2.35s  Stage 1  Globe draws line by line
+     2.35 – 2.80s  Stage 2  Pause (~450ms)
+     2.80s          Stage 3  MSQ (hl-pin-1) appears
+     3.30s          Stage 3  IST (hl-pin-2) appears
+     3.70s          Stage 4  Route MSQ→IST draws (0.9s)
+     4.70s          Stage 3  ALA (hl-marker-1) appears
+     5.05s          Stage 4  Route MSQ→ALA draws (0.9s)
+     6.05s          Stage 3  CAN (hl-marker-2) appears
+     6.40s          Stage 4  Route MSQ→CAN draws (1.0s)
+     8.00s          Stage 5  Idle breathing starts
+     9.00s          Stage 5  Route glow starts (staggered)
    ============================================================= */
 
 .hero-logo-live{
@@ -2274,7 +2283,7 @@ html[data-theme="dark"] .bc-card:hover {
   display: block;
   overflow: visible;
   transform-origin: center center;
-  /* Stage 5: gentle breathing starts well after all routes are done */
+  /* Stage 5: gentle breathing — starts after all routes done */
   animation: hlBreathe 10s ease-in-out 8s infinite;
 }
 @keyframes hlBreathe{
@@ -2282,7 +2291,7 @@ html[data-theme="dark"] .bc-card:hover {
   50%{ transform:scale(1.022); }
 }
 
-/* ── Stage 1: Globe line base state ── */
+/* Stage 1 — Globe line base state (same technique as preloader) */
 .hero-logo-live .hl-line{
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -2292,7 +2301,7 @@ html[data-theme="dark"] .bc-card:hover {
   stroke-dashoffset: 100;
   transition: opacity .4s ease, stroke .4s ease;
 }
-/* Globe draws ring first, then meridians, then parallels */
+/* Ring draws first, then meridians, then parallels */
 .hero-logo-live .hl-ring {  animation: hlDraw 1.10s cubic-bezier(.4,0,.2,1)  .15s forwards; }
 .hero-logo-live .hl-mer-1{ animation: hlDraw  .90s cubic-bezier(.4,0,.2,1)  .55s forwards; }
 .hero-logo-live .hl-mer-2{ animation: hlDraw  .90s cubic-bezier(.4,0,.2,1)  .75s forwards; }
@@ -2300,79 +2309,94 @@ html[data-theme="dark"] .bc-card:hover {
 .hero-logo-live .hl-par-1{ animation: hlDraw  .85s cubic-bezier(.4,0,.2,1) 1.20s forwards; }
 .hero-logo-live .hl-par-2{ animation: hlDraw  .80s cubic-bezier(.4,0,.2,1) 1.40s forwards; }
 .hero-logo-live .hl-par-3{ animation: hlDraw  .80s cubic-bezier(.4,0,.2,1) 1.55s forwards; }
-/* Globe fully drawn at ~2.35s */
-
+/* Globe fully drawn at ≈2.35s */
 @keyframes hlDraw{ to{ stroke-dashoffset:0; } }
 
-/* ── Stage 4: Routes — invisible until drawn ── */
+/* Stage 4 — Routes: hidden until drawn, then idle glow */
 .hero-logo-live .hl-route{
   fill: none;
   stroke-linecap: round;
   stroke-dasharray: 100;
-  stroke-dashoffset: 100;   /* hidden until animation begins */
+  stroke-dashoffset: 100;           /* invisible until animation begins */
   transition: opacity .4s ease, stroke .4s ease;
 }
 /*
-  Each route has two animations comma-separated:
-    1) hlDraw  — one-shot, draws the route (forwards fill keeps dashoffset:0)
-    2) hlRouteGlow — infinite idle glow starting after all routes are done
-  Different properties (dashoffset vs opacity/stroke) so they don't conflict.
+  Two animations per route, different properties — no conflict:
+  hlDraw changes stroke-dashoffset (forwards fill keeps it at 0 after done).
+  hlRouteGlow changes opacity and stroke only.
 */
-/* MSQ → IST: starts just as IST pin finishes appearing */
 .hero-logo-live .hl-route-1{
   animation:
-    hlDraw      .90s cubic-bezier(.4,0,.2,1) 3.55s forwards,
+    hlDraw      .90s cubic-bezier(.4,0,.2,1) 3.70s forwards,
     hlRouteGlow  9s ease-in-out              9.00s infinite;
 }
-/* MSQ → ALA: starts just as ALA pin finishes appearing */
 .hero-logo-live .hl-route-2{
   animation:
-    hlDraw      .90s cubic-bezier(.4,0,.2,1) 4.90s forwards,
+    hlDraw      .90s cubic-bezier(.4,0,.2,1) 5.05s forwards,
     hlRouteGlow  9s ease-in-out              9.40s infinite;
 }
-/* MSQ → CAN: starts just as CAN pin finishes appearing */
 .hero-logo-live .hl-route-3{
   animation:
-    hlDraw     1.10s cubic-bezier(.4,0,.2,1) 6.20s forwards,
+    hlDraw     1.00s cubic-bezier(.4,0,.2,1) 6.40s forwards,
     hlRouteGlow  9s ease-in-out              9.80s infinite;
 }
 @keyframes hlRouteGlow{
-  0%,100%{ opacity:.75; stroke:#5CBF5A; }
-  50%{ opacity:1;   stroke:#6BCF69; }
+  0%,100%{ opacity:.78; stroke:#5CBF5A; }
+  50%{     opacity:1;   stroke:#6BCF69; }
 }
 
-/* ── Stage 3: Pins — sequential appearance ── */
+/* Stage 3 — Original pins: timing updated for sequential appearance */
 .hero-logo-live .hl-pin{
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
   transition: transform .35s ease, filter .35s ease;
 }
-/* Home (MSQ): appears after globe done + 450ms pause */
-.hero-logo-live .hl-pin-home{ animation: hlPinIn .45s cubic-bezier(.34,1.56,.64,1) 2.80s forwards; }
-/* Dest 1 (IST) */
-.hero-logo-live .hl-pin-1{   animation: hlPinIn .40s cubic-bezier(.34,1.56,.64,1) 3.20s forwards; }
-/* Dest 2 (ALA): after route-1 done (3.55+0.9=4.45s) + short pause */
-.hero-logo-live .hl-pin-2{   animation: hlPinIn .40s cubic-bezier(.34,1.56,.64,1) 4.55s forwards; }
-/* Dest 3 (CAN): after route-2 done (4.90+0.9=5.80s) */
-.hero-logo-live .hl-pin-3{   animation: hlPinIn .40s cubic-bezier(.34,1.56,.64,1) 5.80s forwards; }
+/* hl-pin-1 = MSQ home — appears after globe + 450ms pause */
+.hero-logo-live .hl-pin-1{
+  animation: hlPinIn .45s cubic-bezier(.34,1.56,.64,1) 2.80s forwards;
+}
+/* hl-pin-2 = IST — appears 500ms after MSQ, then route-1 draws */
+.hero-logo-live .hl-pin-2{
+  animation: hlPinIn .40s cubic-bezier(.34,1.56,.64,1) 3.30s forwards;
+}
 @keyframes hlPinIn{
-  from{ opacity:0; transform:scale(.5); }
+  from{ opacity:0; transform:scale(.55); }
   to{   opacity:1; transform:scale(1); }
 }
 
-/* ── Hover: calm brightening ── */
+/* Stage 3 — New destination markers (≤6px radius) */
+.hero-logo-live .hl-marker{
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+/* hl-marker-1 = ALA — after route-1 done (3.70+0.90=4.60s) */
+.hero-logo-live .hl-marker-1{
+  animation: hlMarkerIn .35s cubic-bezier(.34,1.56,.64,1) 4.70s forwards;
+}
+/* hl-marker-2 = CAN — after route-2 done (5.05+0.90=5.95s) */
+.hero-logo-live .hl-marker-2{
+  animation: hlMarkerIn .35s cubic-bezier(.34,1.56,.64,1) 6.05s forwards;
+}
+@keyframes hlMarkerIn{
+  from{ opacity:0; transform:scale(.4); }
+  to{   opacity:1; transform:scale(1); }
+}
+
+/* Hover — calm brightening, no jumps */
 .hero-art:hover .hero-logo-live .hl-line,
 .hero-art:hover .hero-logo-live .hl-route{
   opacity: 1;
   stroke: #6BCF69;
 }
-.hero-art:hover .hero-logo-live .hl-pin{
+.hero-art:hover .hero-logo-live .hl-pin,
+.hero-art:hover .hero-logo-live .hl-marker{
   transform: scale(1.06);
   filter: drop-shadow(0 0 4px rgba(92,191,90,.4));
 }
 
-/* ── Responsive ── */
+/* Responsive */
 @media (max-width:980px){
   .hero-art{ min-height:auto; }
   .hero-logo-live{ width:min(88%,340px); margin:0 auto; }
@@ -2381,24 +2405,23 @@ html[data-theme="dark"] .bc-card:hover {
   .hero-logo-live{ width:min(82vw,300px); }
 }
 
-/* ── Accessibility: show static, fully-rendered globe ── */
+/* Accessibility — show fully-rendered static globe, no animation */
 @media (prefers-reduced-motion:reduce){
-  .hero-logo-live{
-    animation: none !important;
-  }
+  .hero-logo-live{ animation:none !important; }
   .hero-logo-live .hl-line{
-    stroke-dashoffset: 0 !important;
-    animation: none !important;
+    stroke-dashoffset:0 !important;
+    animation:none !important;
   }
   .hero-logo-live .hl-route{
-    stroke-dashoffset: 0 !important;
-    opacity: .75 !important;
-    animation: none !important;
+    stroke-dashoffset:0 !important;
+    opacity:.78 !important;
+    animation:none !important;
   }
-  .hero-logo-live .hl-pin{
-    opacity: 1 !important;
-    transform: scale(1) !important;
-    animation: none !important;
+  .hero-logo-live .hl-pin,
+  .hero-logo-live .hl-marker{
+    opacity:1 !important;
+    transform:scale(1) !important;
+    animation:none !important;
   }
 }
 
