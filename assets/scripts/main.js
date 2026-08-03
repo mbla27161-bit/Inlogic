@@ -445,7 +445,7 @@
   })();
 
 
-  /* ---------- Hero logo sequence + idle ---------- */
+  /* ---------- Hero logo: preloader-style draw, then idle ---------- */
   (function initHeroLogoPulse() {
     const svg = document.querySelector('.hero-logo-live');
     if (!svg) return;
@@ -453,34 +453,24 @@
       svg.classList.add('is-ready');
       return;
     }
-    const lines = Array.from(svg.querySelectorAll('.hl-line'));
-    const pulseEl = svg.querySelector('.hl-pulse');
+    const routes = Array.from(svg.querySelectorAll('.hl-route'));
 
-    // Mark ready after full sequence (globe ~2.3s + pins/routes ~4.3s)
+    // After draw + pins + routes (~2.6s)
     setTimeout(function () {
       svg.classList.add('is-ready');
-    }, 4500);
+    }, 2800);
 
-    function pulseOnce() {
-      if (!lines.length) return;
-      const line = lines[Math.floor(Math.random() * lines.length)];
-      line.classList.remove('hl-pulse-run');
-      void line.offsetWidth;
-      line.classList.add('hl-pulse-run');
-      if (pulseEl) {
-        pulseEl.classList.remove('hl-pulse-active');
-        void pulseEl.offsetWidth;
-        pulseEl.classList.add('hl-pulse-active');
-        setTimeout(function () { pulseEl.classList.remove('hl-pulse-active'); }, 1900);
-      }
-      setTimeout(function () { line.classList.remove('hl-pulse-run'); }, 1900);
+    // Rare soft glow on one route (12–16s), not chaotic line pulse
+    if (routes.length) {
+      setTimeout(function loop() {
+        const r = routes[Math.floor(Math.random() * routes.length)];
+        r.classList.remove('hl-glow');
+        void r.offsetWidth;
+        r.classList.add('hl-glow');
+        setTimeout(function () { r.classList.remove('hl-glow'); }, 2100);
+        setTimeout(loop, 12000 + Math.random() * 4000);
+      }, 6000);
     }
-
-    // Idle pulse 10–15s after sequence
-    setTimeout(function loop() {
-      pulseOnce();
-      setTimeout(loop, 10000 + Math.random() * 5000);
-    }, 5500);
   })();
 
 
