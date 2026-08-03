@@ -445,10 +445,43 @@
   })();
 
 
-  /* ---------- Hero globe: animation is fully CSS-driven ---------- */
-  /* Drawing sequence, pin appearances, route drawing, idle breathing  */
-  /* and route glow are all handled by CSS keyframe animations.        */
-  /* No JS needed for the animation sequence — see styles.css.         */
+  /* ---------- Hero logo sequence + idle ---------- */
+  (function initHeroLogoPulse() {
+    const svg = document.querySelector('.hero-logo-live');
+    if (!svg) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      svg.classList.add('is-ready');
+      return;
+    }
+    const lines = Array.from(svg.querySelectorAll('.hl-line'));
+    const pulseEl = svg.querySelector('.hl-pulse');
+
+    // Mark ready after full sequence (globe ~2.3s + pins/routes ~4.3s)
+    setTimeout(function () {
+      svg.classList.add('is-ready');
+    }, 4500);
+
+    function pulseOnce() {
+      if (!lines.length) return;
+      const line = lines[Math.floor(Math.random() * lines.length)];
+      line.classList.remove('hl-pulse-run');
+      void line.offsetWidth;
+      line.classList.add('hl-pulse-run');
+      if (pulseEl) {
+        pulseEl.classList.remove('hl-pulse-active');
+        void pulseEl.offsetWidth;
+        pulseEl.classList.add('hl-pulse-active');
+        setTimeout(function () { pulseEl.classList.remove('hl-pulse-active'); }, 1900);
+      }
+      setTimeout(function () { line.classList.remove('hl-pulse-run'); }, 1900);
+    }
+
+    // Idle pulse 10–15s after sequence
+    setTimeout(function loop() {
+      pulseOnce();
+      setTimeout(loop, 10000 + Math.random() * 5000);
+    }, 5500);
+  })();
 
 
 })();
