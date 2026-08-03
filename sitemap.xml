@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://inlogic.by/</loc><changefreq>weekly</changefreq><priority>1</priority></url>
+  <url><loc>https://inlogic.by/pages/about.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/contacts.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/career.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://inlogic.by/pages/courses.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://inlogic.by/pages/documents.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://inlogic.by/pages/services/auto.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/services/railway.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/services/air.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/services/sea.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/services/lcl.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/services/storage.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://inlogic.by/pages/services/insurance.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://inlogic.by/pages/directions/china.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/directions/turkey.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/directions/europe.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://inlogic.by/pages/directions/russia.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+</urlset>
