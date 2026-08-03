@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+  <!-- outer ring -->
+  <circle cx="36" cy="38" r="30" stroke="currentColor" stroke-width="3.5" fill="none"/>
+  <!-- meridians (vertical) -->
+  <ellipse cx="36" cy="38" rx="10" ry="30" stroke="currentColor" stroke-width="2.4" fill="none"/>
+  <ellipse cx="36" cy="38" rx="20" ry="30" stroke="currentColor" stroke-width="2.4" fill="none"/>
+  <ellipse cx="36" cy="38" rx="28" ry="30" stroke="currentColor" stroke-width="2.2" fill="none"/>
+  <!-- parallels (horizontal) -->
+  <ellipse cx="36" cy="38" rx="30" ry="10" stroke="currentColor" stroke-width="2.4" fill="none"/>
+  <path d="M8.5 26 Q36 16 63.5 26" stroke="currentColor" stroke-width="2.3" fill="none"/>
+  <path d="M8.5 50 Q36 60 63.5 50" stroke="currentColor" stroke-width="2.3" fill="none"/>
+  <!-- left pin (larger, upper-left) -->
+  <g transform="translate(8,2)">
+    <path d="M12 2C6.5 2 2 6.8 2 12.5C2 21 12 34 12 34S22 21 22 12.5C22 6.8 17.5 2 12 2Z" fill="currentColor"/>
+    <circle cx="12" cy="12.5" r="4.2" fill="#fff"/>
+  </g>
+  <!-- right pin (slightly smaller, right side) -->
+  <g transform="translate(40,14)">
+    <path d="M11 2C6.2 2 2.2 6.5 2.2 11.8C2.2 19.5 11 31.5 11 31.5S19.8 19.5 19.8 11.8C19.8 6.5 15.8 2 11 2Z" fill="currentColor"/>
+    <circle cx="11" cy="11.8" r="3.8" fill="#fff"/>
+  </g>
+</svg>

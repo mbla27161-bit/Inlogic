@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 90" fill="none" role="img" aria-label="InLogic">
+  <g transform="translate(2,6)">
+    <circle cx="36" cy="38" r="30" stroke="#5CBF5A" stroke-width="3.5" fill="none"/>
+    <ellipse cx="36" cy="38" rx="10" ry="30" stroke="#5CBF5A" stroke-width="2.4" fill="none"/>
+    <ellipse cx="36" cy="38" rx="20" ry="30" stroke="#5CBF5A" stroke-width="2.4" fill="none"/>
+    <ellipse cx="36" cy="38" rx="28" ry="30" stroke="#5CBF5A" stroke-width="2.2" fill="none"/>
+    <ellipse cx="36" cy="38" rx="30" ry="10" stroke="#5CBF5A" stroke-width="2.4" fill="none"/>
+    <path d="M8.5 26 Q36 16 63.5 26" stroke="#5CBF5A" stroke-width="2.3" fill="none"/>
+    <path d="M8.5 50 Q36 60 63.5 50" stroke="#5CBF5A" stroke-width="2.3" fill="none"/>
+    <g transform="translate(8,2)">
+      <path d="M12 2C6.5 2 2 6.8 2 12.5C2 21 12 34 12 34S22 21 22 12.5C22 6.8 17.5 2 12 2Z" fill="#5CBF5A"/>
+      <circle cx="12" cy="12.5" r="4.2" fill="#fff"/>
+    </g>
+    <g transform="translate(40,14)">
+      <path d="M11 2C6.2 2 2.2 6.5 2.2 11.8C2.2 19.5 11 31.5 11 31.5S19.8 19.5 19.8 11.8C19.8 6.5 15.8 2 11 2Z" fill="#5CBF5A"/>
+      <circle cx="11" cy="11.8" r="3.8" fill="#fff"/>
+    </g>
+  </g>
+  <text x="90" y="48" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="42" letter-spacing="-0.5" fill="#1F2A38">InLogic</text>
+  <text x="92" y="70" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="14" fill="#5A6A7C">Логистика без границ</text>
+</svg>
