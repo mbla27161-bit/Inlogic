@@ -445,47 +445,32 @@
   })();
 
 
-  /* ---------- Hero globe: draw + moving logistics dots ---------- */
-  (function initHeroLogoLiveDots(){
-    const svg=document.querySelector('.hero-logo-live');
-    if(!svg) return;
-    svg.classList.add('is-started');
-    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const start=()=>{
-      if(reduced){ svg.classList.add('is-ready'); return; }
-      const paths=[...svg.querySelectorAll('.hl-line')];
-      const data=[];
-      paths.forEach(el=>{
-        const tag=el.tagName;
-        if(tag==='circle') data.push({el,cx:+el.getAttribute('cx'),cy:+el.getAttribute('cy'),r:+el.getAttribute('r'),type:'circle'});
-        if(tag==='ellipse') data.push({el,cx:+el.getAttribute('cx'),cy:+el.getAttribute('cy'),rx:+el.getAttribute('rx'),ry:+el.getAttribute('ry'),type:'ellipse'});
-      });
-      const group=svg.querySelector('.hl-logistic-dots');
-      const dots=[];
-      const count=4;
-      for(let i=0;i<count;i++){
-        const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
-        c.setAttribute('r','0.9'); group.appendChild(c);
-        const path=data[Math.floor(Math.random()*data.length)];
-        dots.push({el:c,path,angle:Math.random()*Math.PI*2,speed:.18+Math.random()*.12});
-      }
-      function tick(){
-        dots.forEach(d=>{
-          d.angle+=d.speed/60;
-          const p=d.path;
-          let x,y;
-          if(p.type==='circle'){
-            x=p.cx+Math.cos(d.angle)*p.r; y=p.cy+Math.sin(d.angle)*p.r;
-          }else{
-            x=p.cx+Math.cos(d.angle)*p.rx; y=p.cy+Math.sin(d.angle)*p.ry;
-          }
-          d.el.setAttribute('cx',x); d.el.setAttribute('cy',y);
-        });
-        requestAnimationFrame(tick);
-      }
-      tick();
-    };
-    setTimeout(()=>{svg.classList.add('is-ready'); start();},2200);
+  /* ---------- Hero logo: preloader-style draw, then idle ---------- */
+  (function initHeroLogoPulse() {
+    const svg = document.querySelector('.hero-logo-live');
+    if (!svg) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      svg.classList.add('is-ready');
+      return;
+    }
+    const routes = Array.from(svg.querySelectorAll('.hl-route'));
+
+    // After draw + pins + routes (~2.6s)
+    setTimeout(function () {
+      svg.classList.add('is-ready');
+    }, 2800);
+
+    // Rare soft glow on one route (12–16s), not chaotic line pulse
+    if (routes.length) {
+      setTimeout(function loop() {
+        const r = routes[Math.floor(Math.random() * routes.length)];
+        r.classList.remove('hl-glow');
+        void r.offsetWidth;
+        r.classList.add('hl-glow');
+        setTimeout(function () { r.classList.remove('hl-glow'); }, 2100);
+        setTimeout(loop, 12000 + Math.random() * 4000);
+      }, 6000);
+    }
   })();
 
 
