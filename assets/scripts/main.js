@@ -541,10 +541,10 @@
     const startSequence = function () {
       svg.classList.add("is-started");
 
-      // After draw + pins + routes (~2.8 s from sequence start)
+      // After draw + routes + dots (~5.5 s from sequence start)
       setTimeout(function () {
         svg.classList.add("is-ready");
-      }, 2800);
+      }, 5500);
 
       // Rare soft glow on one route (12–16 s interval), no chaotic effects
       const routes = Array.from(svg.querySelectorAll(".hl-route"));
