@@ -3694,20 +3694,9 @@ html[data-theme="dark"] .bc-card:hover {
   animation-delay: 0.18s;
 }
 
-/* Routes — thin lines drawn from centre after globe + pause */
+/* Routes hidden — globe itself is the logistic network */
 .hero-logo-live .hl-route {
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-dasharray: 280;
-  stroke-dashoffset: 280;
-  opacity: 0.35;
-}
-.hero-logo-live.is-started .hl-route-1 {
-  animation: introDraw 1.5s ease 2s forwards;
-}
-.hero-logo-live.is-started .hl-route-2 {
-  animation: introDraw 1.5s ease 4.1s forwards;
+  display: none;
 }
 
 /* Idle: very soft breath only */
