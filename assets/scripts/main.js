@@ -445,32 +445,39 @@
   })();
 
 
-  /* ---------- Hero logo: preloader-style draw, then idle ---------- */
-  (function initHeroLogoPulse() {
+  /* ---------- Hero logo: globe draw + moving logistics dots ---------- */
+  (function initHeroLogo() {
     const svg = document.querySelector('.hero-logo-live');
-    if (!svg) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      svg.classList.add('is-ready');
-      return;
-    }
-    const routes = Array.from(svg.querySelectorAll('.hl-route'));
+    const layer = svg && svg.querySelector('.logistic-dots');
+    if (!svg || !layer) return;
 
-    // After draw + pins + routes (~2.6s)
-    setTimeout(function () {
-      svg.classList.add('is-ready');
-    }, 2800);
+    const ns='http://www.w3.org/2000/svg';
+    const pts=[
+      [300,110,260,220],[300,490,360,300],[110,300,260,360],[490,300,340,250]
+    ];
+    const dots=[];
+    pts.forEach((p,i)=>{
+      const c=document.createElementNS(ns,'circle');
+      c.setAttribute('r','3');
+      c.setAttribute('class','logistic-dot');
+      layer.appendChild(c);
+      dots.push({el:c,phase:i*1.7,speed:.35+i*.04,route:p});
+    });
 
-    // Rare soft glow on one route (12–16s), not chaotic line pulse
-    if (routes.length) {
-      setTimeout(function loop() {
-        const r = routes[Math.floor(Math.random() * routes.length)];
-        r.classList.remove('hl-glow');
-        void r.offsetWidth;
-        r.classList.add('hl-glow');
-        setTimeout(function () { r.classList.remove('hl-glow'); }, 2100);
-        setTimeout(loop, 12000 + Math.random() * 4000);
-      }, 6000);
+    function move(t){
+      if(t<1800){requestAnimationFrame(move);return;}
+      dots.forEach(d=>{
+        const a=(t/1000*d.speed+d.phase)%6.28;
+        const r=90+Math.sin(a*2)*45;
+        const x=300+Math.cos(a)*r;
+        const y=300+Math.sin(a)*r*.72;
+        d.el.setAttribute('cx',x);
+        d.el.setAttribute('cy',y);
+      });
+      requestAnimationFrame(move);
     }
+    svg.classList.add('is-ready');
+    requestAnimationFrame(move);
   })();
 
 
