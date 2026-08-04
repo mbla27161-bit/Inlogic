@@ -3648,7 +3648,7 @@ html[data-theme="dark"] .bc-card:hover {
 }
 
 /* ================= HERO LIVE LOGO ================= */
-/* Draw mechanism = preloader (introDraw / dash 280), then routes + dots, no pins, no text */
+/* Draw mechanism = preloader (introDraw / dash 280), then two routes, no markers */
 .hero-art {
   display: flex;
   align-items: center;
@@ -3665,8 +3665,10 @@ html[data-theme="dark"] .bc-card:hover {
   color: #5cbf5a;
 }
 
-/* Big pins removed — hero stays a logo, not a map */
-.hero-logo-live .hl-pin {
+/* All markers hidden — hero stays a logo, not a map */
+.hero-logo-live .hl-pin,
+.hero-logo-live .hl-dot,
+.hero-logo-live .hl-pulse {
   display: none;
 }
 
@@ -3680,50 +3682,32 @@ html[data-theme="dark"] .bc-card:hover {
   stroke-dashoffset: 280;
 }
 .hero-logo-live.is-started .hl-line {
-  animation: introDraw 1.5s ease forwards;
+  animation: introDraw 0.7s ease forwards;
 }
 .hero-logo-live.is-started .hl-ring {
   animation-delay: 0s;
 }
 .hero-logo-live.is-started .hl-mer {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 .hero-logo-live.is-started .hl-par {
-  animation-delay: 0.36s;
+  animation-delay: 0.18s;
 }
 
-/* Routes — drawn from centre after globe + pause */
+/* Routes — thin lines drawn from centre after globe + pause */
 .hero-logo-live .hl-route {
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-dasharray: 280;
   stroke-dashoffset: 280;
-  opacity: 0.75;
+  opacity: 0.35;
 }
 .hero-logo-live.is-started .hl-route-1 {
-  animation: introDraw 1.1s ease 2.4s forwards;
+  animation: introDraw 1.5s ease 2s forwards;
 }
 .hero-logo-live.is-started .hl-route-2 {
-  animation: introDraw 1.1s ease 3.9s forwards;
-}
-
-/* Endpoint dots — appear only after route finishes */
-.hero-logo-live .hl-dot {
-  opacity: 0;
-  fill: #5cbf5a;
-}
-.hero-logo-live.is-started .hl-dot-1 {
-  animation: introFade 0.35s ease 3.5s forwards;
-}
-.hero-logo-live.is-started .hl-dot-2 {
-  animation: introFade 0.35s ease 5s forwards;
-}
-
-/* Hide pulse overlay element (no chaotic pulse) */
-.hero-logo-live .hl-pulse {
-  opacity: 0 !important;
-  pointer-events: none;
+  animation: introDraw 1.5s ease 4.1s forwards;
 }
 
 /* Idle: very soft breath only */
@@ -3738,24 +3722,6 @@ html[data-theme="dark"] .bc-card:hover {
   50% {
     transform: scale(1.01);
   }
-}
-
-/* Rare soft glow on routes only */
-.hero-logo-live .hl-route.hl-glow {
-  animation: hlRouteGlow 2s ease-in-out 1;
-}
-@keyframes hlRouteGlow {
-  0%,
-  100% {
-    opacity: 0.75;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.hero-art:hover .hero-logo-live .hl-line {
-  opacity: 1;
 }
 
 @media (max-width: 980px) {
@@ -3781,10 +3747,5 @@ html[data-theme="dark"] .bc-card:hover {
   .hero-logo-live .hl-route {
     stroke-dashoffset: 0 !important;
     animation: none !important;
-  }
-  .hero-logo-live .hl-dot {
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
   }
 }
