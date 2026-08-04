@@ -541,25 +541,10 @@
     const startSequence = function () {
       svg.classList.add("is-started");
 
-      // After draw + routes + dots (~5.5 s from sequence start)
+      // After globe draw + routes (~4.5 s from sequence start)
       setTimeout(function () {
         svg.classList.add("is-ready");
-      }, 5500);
-
-      // Rare soft glow on one route (12–16 s interval), no chaotic effects
-      const routes = Array.from(svg.querySelectorAll(".hl-route"));
-      if (routes.length) {
-        setTimeout(function loop() {
-          const r = routes[Math.floor(Math.random() * routes.length)];
-          r.classList.remove("hl-glow");
-          void r.offsetWidth;
-          r.classList.add("hl-glow");
-          setTimeout(function () {
-            r.classList.remove("hl-glow");
-          }, 2100);
-          setTimeout(loop, 12000 + Math.random() * 4000);
-        }, 6000);
-      }
+      }, 4500);
     };
 
     // If preloader is present — wait for it; otherwise start immediately
