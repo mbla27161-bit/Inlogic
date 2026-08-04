@@ -383,6 +383,14 @@ nav.primary-nav a.active::after{ transform:scaleX(1); }
   aspect-ratio:1/1.02;
 }
 .hero-art svg{ width:100%; height:100%; }
+
+.globe-orbit{transform-origin:300px 300px;animation:globeSpin 18s linear infinite;}
+.globe-route{animation:globeRoute 8s linear infinite;}
+.globe-aura{animation:globeGlow 4s ease-in-out infinite;}
+@keyframes globeSpin{to{stroke-dashoffset:-1180;transform:rotate(360deg);}}
+@keyframes globeRoute{to{stroke-dashoffset:-140;}}
+@keyframes globeGlow{50%{opacity:.7;}}
+
 .route-path{
   stroke-dasharray:8 9;
   animation:dash 22s linear infinite;
@@ -2251,18 +2259,115 @@ html[data-theme="dark"] .bc-card:hover {
 
 
 /* ================= HERO LIVE LOGO ================= */
-/* Hero globe: same draw as preloader + slow logistics dots */
-.hero-art{display:flex;align-items:center;justify-content:center;min-height:min(72vh,520px)}
-.hero-logo-live{width:min(100%,480px);height:auto;aspect-ratio:1;display:block;overflow:visible;transform-origin:center;color:#5CBF5A}
-.hero-logo-live .hl-line{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:280;stroke-dashoffset:280}
-.hero-logo-live.is-started .hl-line{animation:introDraw .9s ease forwards}
-.hero-logo-live.is-started .hl-ring{animation-delay:0s}
-.hero-logo-live.is-started .hl-mer{animation-delay:.18s}
-.hero-logo-live.is-started .hl-par{animation-delay:.32s}
-.hero-logo-live.is-ready{animation:hlBreathe 12s ease-in-out infinite}
-@keyframes hlBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
-.hl-logistic-dot{fill:#5CBF5A;opacity:.55;filter:drop-shadow(0 0 2px rgba(92,191,90,.35))}
-.hero-art:hover .hl-line{opacity:1}
+/* Draw mechanism = preloader (introDraw / dash 280), then pins + routes, no text */
+.hero-art{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height: min(72vh, 520px);
+}
+.hero-logo-live{
+  width: min(100%, 480px);
+  height: auto;
+  aspect-ratio: 1;
+  display: block;
+  overflow: visible;
+  transform-origin: center center;
+  color: #5CBF5A;
+}
+
+/* Same draw engine as .intro-logo-svg */
+.hero-logo-live .hl-line{
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 280;
+  stroke-dashoffset: 280;
+  animation: introDraw .7s ease forwards;
+}
+.hero-logo-live .hl-ring{
+  animation-delay: 0s;
+}
+.hero-logo-live .hl-mer{
+  animation-delay: .1s;
+}
+.hero-logo-live .hl-par{
+  animation-delay: .18s;
+}
+
+/* Routes — same dash technique, after pins */
+.hero-logo-live .hl-route{
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-dasharray: 280;
+  stroke-dashoffset: 280;
+  opacity: 0.75;
+}
+.hero-logo-live .hl-route-1{
+  animation: introDraw .65s ease 1.35s forwards;
+}
+.hero-logo-live .hl-route-2{
+  animation: introDraw .65s ease 1.85s forwards;
+}
+
+/* Endpoint dots — with routes */
+.hero-logo-live .hl-dot{
+  opacity: 0;
+  fill: #5CBF5A;
+}
+.hero-logo-live .hl-dot-1{
+  animation: introFade .35s ease 1.3s forwards;
+}
+.hero-logo-live .hl-dot-2{
+  animation: introFade .35s ease 1.8s forwards;
+}
+
+/* Pins — same introPin as preloader, sequential, no text */
+.hero-logo-live .hl-pin{
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.hero-logo-live .hl-pin-1{
+  animation: introPin .4s ease 1.0s forwards;
+}
+.hero-logo-live .hl-pin-2{
+  animation: introPin .4s ease 1.5s forwards;
+}
+
+/* Hide pulse overlay element (no chaotic pulse) */
+.hero-logo-live .hl-pulse{
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+/* Idle: soft breath after sequence (~2.6s+) */
+.hero-logo-live.is-ready{
+  animation: hlBreathe 12s ease-in-out infinite;
+}
+@keyframes hlBreathe{
+  0%, 100%{ transform: scale(1); }
+  50%{ transform: scale(1.01); }
+}
+
+/* Rare soft glow on routes only */
+.hero-logo-live .hl-route.hl-glow{
+  animation: hlRouteGlow 2s ease-in-out 1;
+}
+@keyframes hlRouteGlow{
+  0%, 100%{ opacity: 0.75; }
+  50%{ opacity: 1; }
+}
+
+.hero-art:hover .hero-logo-live .hl-line{
+  opacity: 1;
+}
+.hero-art:hover .hero-logo-live .hl-pin{
+  filter: drop-shadow(0 0 3px rgba(92,191,90,.28));
+}
+
 @media (max-width: 980px){
   .hero-art{ min-height: auto; }
   .hero-logo-live{
